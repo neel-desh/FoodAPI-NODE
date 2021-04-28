@@ -1,0 +1,21 @@
+{
+  "name": "foodtruck-api",
+  "version": "1.0.0",
+  "description": "Api created for internship eligilibity test",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "FoodTruck"
+  ],
+  "author": "Neel Deshmukh",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.6",
+    "multer": "^1.4.2"
+  }
+}

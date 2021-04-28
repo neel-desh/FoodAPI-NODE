@@ -1,0 +1,273 @@
+<html>
+    <head>
+        <title>Food Truck - Search API</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+        <style>
+          body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        h1{
+            text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 40px;
+        }
+        
+        </style>
+    </head>
+    <body>
+      <div style="padding: 30px;"></div>
+
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+
+            <h1>Click on the Map and Find the Food Outlet!</h1>
+
+            <p class="lead">This is a demo for getting eligible, for the internship at SoluLab.</p>
+
+
+            
+        </div>
+            <div class="col-lg-8">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Address</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pin Code</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Food Item</a>
+                    </li>
+                  </ul>
+                  
+
+                  <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <form id="address" method="GET" action="/api/v1/address/">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Enter Address</label>
+                              <input type="text" name="locality" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Address">
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                          </form>
+                    </div> 
+                    <!-- Address Form End -->
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <form id="pincode" method="GET" action="/api/v1/pincode/">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Enter Pin Code</label>
+                              <input type="text" name="pincode" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Pin Code">
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                          </form>
+                    </div>
+                    <!-- Pin Code Form End -->
+
+                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                        <form id="fooditem" method="GET" action="/api/v1/fooditem/">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Enter Food Name</label>
+                              <input type="text" name="fooditem" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Food Name">
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                          </form>
+                    </div>
+                    <!-- Food Item Form End -->
+
+                  </div>
+                 
+                
+            </div><!-- /.8 -->
+
+        </div> <!-- /.row-->
+        <table id="displaydata" class="table" style="margin-left: 10px; margin-right:10px;">
+          <thead>
+            <tr>
+              <th scope="col">Applicant</th>
+              <th scope="col">Truck Type</th>
+              <th scope="col">Food Items</th>
+              <th scope="col">Address</th>
+              <th scope="col">Detail Address</th>
+    
+            </tr>
+          </thead>
+          <tbody>
+    
+    
+            
+          </tbody>
+        </table>  
+    </div> <!-- /.container-->
+
+    <hr width="100%" style="height: 8px;">
+
+
+            <div class="d-flex justify-content-around">
+                <div id="map"></div>
+                <div class="card border-dark mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Header</div>
+                    <div class="card-body text-dark">
+                      <h5 class="card-title">Dark card title</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                
+              </div>   
+            </div> 
+
+
+
+
+
+            
+<!-- Maps API key -> AIzaSyCF476V_ivAhGFrjKp22pzuH4xHa6KOCqI -->
+<script src="https://code.jquery.com/jquery-3.2.1.js"  crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+            <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCF476V_ivAhGFrjKp22pzuH4xHa6KOCqI"></script> -->
+            <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCF476V_ivAhGFrjKp22pzuH4xHa6KOCqI"
+            ></script>
+            <!-- <script src="custom.js"></script> -->
+            
+    <script>
+        var map;
+        function init_map() {
+            
+            var opts = { 'center': new google.maps.LatLng(35.567980458012094,51.4599609375), 'zoom': 16, 'mapTypeId': google.maps.MapTypeId.ROADMAP }
+                map = new google.maps.Map(document.getElementById('map'), opts);
+            
+  
+       
+             google.maps.event.addListener(map,'click',function(event) {
+                 lat =  event.latLng.lat()
+                  lng = event.latLng.lng()
+                 console.log("Click on",lat,lng)
+             });
+
+             google.maps.event.addListener(map,'mousemove',function(event) {
+
+             });
+
+        } 
+        google.maps.event.addDomListener(window, 'load', init_map);
+    </script>
+    <script>
+      //This Script Send Forms request and recive response
+// this is the id of the form
+$("#address").submit(function(e) {
+
+  e.preventDefault(); // avoid to execute the actual submit of the form.
+
+  var form = $(this);
+  var url = form.attr('action');
+  data = form.serialize()
+  console.log(url)
+  console.log(data.slice(data.indexOf("=") + 1))
+  newUrl = url + data.slice(data.indexOf("=") + 1)
+  $.ajax({
+         type: "GET",
+         url: newUrl,
+         
+         success: function(data)
+         {
+          $('#displaydata tbody').empty();
+             console.log(data)
+             data.map((row)=>{
+              $('#displaydata tr:last').after(
+                `<tr>
+                  
+                    <th scope="row">${row.Applicant}</th>
+                    <td>${row.FacilityType}</td>
+                    <td>${row.FoodItems}</td>
+                    <td>${row.Address}</td>
+                    <td>${row.LocationDescription}</td>    
+                </tr>`
+              );
+            });
+         }
+       });
+
+  
+});
+// this is the id of the form
+$("#pincode").submit(function(e) {
+
+  e.preventDefault(); // avoid to execute the actual submit of the form.
+
+  var form = $(this);
+  var url = form.attr('action');
+  data = form.serialize()
+  console.log(url)
+  console.log(data.slice(data.indexOf("=") + 1))
+  newUrl = url + data.slice(data.indexOf("=") + 1)
+  $.ajax({
+         type: "GET",
+         url: newUrl, // serializes the form's elements.
+         success: function(data)
+         {
+          $('#displaydata tbody').empty();
+
+          console.log(data);
+          data.map((row)=>{
+            $('#displaydata tr:last').after(
+              `<tr>
+                
+                  <th scope="row">${row.Applicant}</th>
+                  <td>${row.FacilityType}</td>
+                  <td>${row.FoodItems}</td>
+                  <td>${row.Address}</td>
+                  <td>${row.LocationDescription}</td>    
+              </tr>`
+            );
+          });
+          
+          
+             
+         }
+       });
+
+  
+});
+// this is the id of the form
+$("#fooditem").submit(function(e) {
+
+  e.preventDefault(); // avoid to execute the actual submit of the form.
+
+  var form = $(this);
+  var url = form.attr('action');
+  data = form.serialize()
+  console.log(url)
+  console.log(data.slice(data.indexOf("=") + 1))
+  newUrl = url + data.slice(data.indexOf("=") + 1)
+  $.ajax({
+         type: "GET",
+         url: newUrl, // serializes the form's elements.
+         success: function(data)
+         {
+          $('#displaydata tbody').empty();
+
+             console.log(data);
+             data.map((row)=>{
+              $('#displaydata tr:last').after(
+                `<tr>
+                  
+                    <th scope="row">${row.Applicant}</th>
+                    <td>${row.FacilityType}</td>
+                    <td>${row.FoodItems}</td>
+                    <td>${row.Address}</td>
+                    <td>${row.LocationDescription}</td>    
+                </tr>`
+              );
+            });
+         }
+       });
+
+  
+});
+
+    </script>
+    </body>
+</html>
