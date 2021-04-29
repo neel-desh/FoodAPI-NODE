@@ -105,17 +105,39 @@
     <hr width="100%" style="height: 8px;">
 
 
-            <div class="d-flex justify-content-around">
-                <div id="map"></div>
-                <div class="card border-dark mb-3" style="max-width: 20rem;">
-                    <div class="card-header">Header</div>
-                    <div class="card-body text-dark">
-                      <h5 class="card-title">Dark card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                
-              </div>   
-            </div> 
+    
+    <div class="container">
+
+      <div class="row">
+
+          <div class="col-lg-8 col-lg-offset-2">
+
+  
+        
+              <div id="map" style="width: 100%; height: 400px; margin-top: 40px; margin-bottom: 40px;"></div>
+              <table id="displaydatamap" class="table" style="margin-left: 10px; margin-right:10px;margin-top:10px;">
+                <thead>
+                  <tr>
+                    <th scope="col">Applicant</th>
+                    <th scope="col">Truck Type</th>
+                    <th scope="col">Food Items</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Detail Address</th>
+          
+                  </tr>
+                </thead>
+                <tbody>
+          
+          
+                  
+                </tbody>
+              </table> 
+          </div><!-- /.8 -->
+
+      </div> <!-- /.row-->
+
+  </div> <!-- /.container-->
+
 
 
 
@@ -145,6 +167,31 @@
                  lat =  event.latLng.lat()
                   lng = event.latLng.lng()
                  console.log("Click on",lat,lng)
+                 let newUrl = `/api/v1/locations/${lat},${lng}`
+                 console.log(newUrl)
+                 $.ajax({
+                  type: "GET",
+                  url: newUrl,
+                  
+                  success: function(data)
+                  {
+                    $('#displaydatamap tbody').empty();
+                      console.log(data)
+                      data.map((row)=>{
+                       $('#displaydatamap tr:last').after(
+                         `<tr>
+                           
+                             <th scope="row">${row.Applicant}</th>
+                             <td>${row.FacilityType}</td>
+                             <td>${row.FoodItems}</td>
+                             <td>${row.Address}</td>
+                             <td>${row.LocationDescription}</td>    
+                         </tr>`
+                       );
+                     });
+                  }
+                });
+
              });
 
              google.maps.event.addListener(map,'mousemove',function(event) {
