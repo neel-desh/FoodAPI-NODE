@@ -41,6 +41,9 @@
                     <li class="nav-item">
                       <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Food Item</a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="pills-latlng-tab" data-toggle="pill" href="#pills-latlng" role="tab" aria-controls="pills-latlng" aria-selected="false">Location</a>
+                    </li>
                   </ul>
                   
 
@@ -77,6 +80,18 @@
                     </div>
                     <!-- Food Item Form End -->
 
+                    <div class="tab-pane fade" id="pills-latlng" role="tabpanel" aria-labelledby="pills-latlng-tab">
+                      <form id="latlng" method="GET" action="/api/v1/locations/">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Enter Longitude, Latitude</label>
+                          <input type="text" name="latlng" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="eg: 37.80457786909011, -122.43301077434302">
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                      </form>
+                  </div>
+
+              </div> 
+              <!-- Address Form End -->
                   </div>
                  
                 
@@ -106,7 +121,7 @@
 
 
     
-    <div class="container">
+    <!-- <div class="container">
 
       <div class="row">
 
@@ -132,11 +147,11 @@
                   
                 </tbody>
               </table> 
-          </div><!-- /.8 -->
+          </div>
 
-      </div> <!-- /.row-->
+      </div> 
 
-  </div> <!-- /.container-->
+  </div>  -->
 
 
 
@@ -157,10 +172,14 @@
     <script>
         var map;
         function init_map() {
-            
-            var opts = { 'center': new google.maps.LatLng(35.567980458012094,51.4599609375), 'zoom': 16, 'mapTypeId': google.maps.MapTypeId.ROADMAP }
+            let latlng = new google.maps.LatLng(37.80457786909011, -122.43301077434302)
+            var opts = { 'center': new google.maps.LatLng(37.80457786909011, -122.43301077434302), 'zoom': 16, 'mapTypeId': google.maps.MapTypeId.ROADMAP }
                 map = new google.maps.Map(document.getElementById('map'), opts);
-            
+                new google.maps.Marker({
+                  position: latlng,
+                  map,
+                  title: "Here",
+                });
   
        
              google.maps.event.addListener(map,'click',function(event) {
@@ -314,7 +333,41 @@ $("#fooditem").submit(function(e) {
 
   
 });
+$("#latlng").submit(function(e) {
 
+  e.preventDefault(); // avoid to execute the actual submit of the form.
+
+  var form = $(this);
+  var url = form.attr('action');
+  data = form.serialize()
+  console.log(url)
+  console.log(data.slice(data.indexOf("=") + 1))
+  newUrl = url + data.slice(data.indexOf("=") + 1)
+  $.ajax({
+         type: "GET",
+         url: newUrl, // serializes the form's elements.
+         success: function(data)
+         {
+          $('#displaydata tbody').empty();
+
+             console.log(data);
+             data.map((row)=>{
+              $('#displaydata tr:last').after(
+                `<tr>
+                  
+                    <th scope="row">${row.Applicant}</th>
+                    <td>${row.FacilityType}</td>
+                    <td>${row.FoodItems}</td>
+                    <td>${row.Address}</td>
+                    <td>${row.LocationDescription}</td>    
+                </tr>`
+              );
+            });
+         }
+       });
+
+  
+});
     </script>
     </body>
 </html>
